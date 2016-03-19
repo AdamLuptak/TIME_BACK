@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IWorkTimeRecordRepo {
 
-    public List gettWorkTimeRecords() throws SQLException;
+    public List getWorkTimeRecords() throws SQLException;
 
     public WorkTimeRecord getWorkTimeRecord(String id) throws SQLException;
 

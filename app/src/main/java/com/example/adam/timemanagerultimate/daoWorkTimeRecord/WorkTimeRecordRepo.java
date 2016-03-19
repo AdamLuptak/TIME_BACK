@@ -4,6 +4,7 @@ package com.example.adam.timemanagerultimate.daoWorkTimeRecord;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
@@ -39,12 +40,13 @@ public class WorkTimeRecordRepo implements IWorkTimeRecordRepo {
 
     @Override
     public WorkTimeRecord getLastWorkTimeRecord() throws SQLException {
-        return productDao.queryBuilder().orderBy("arrivalDate",false).queryForFirst();
+        Calendar c = getCalenda(Calendar.MONDAY);
+        return productDao.queryBuilder().orderBy("arrivalDate", false).where().ge("arrivalDate", c.getTime()).queryForFirst();
     }
 
     @Override
-    public List gettWorkTimeRecords() throws SQLException {
-        return productDao.queryForAll();
+    public List getWorkTimeRecords() throws SQLException {
+        return productDao.queryBuilder().orderBy("arrivalDate", false).query();
     }
 
     @Override
@@ -69,10 +71,16 @@ public class WorkTimeRecordRepo implements IWorkTimeRecordRepo {
 
     @Override
     public List<WorkTimeRecord> getAlldaysForThisWeek() throws SQLException {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        Calendar c = getCalenda(Calendar.MONDAY);
         List<WorkTimeRecord> wkReturn =  productDao.queryBuilder().where().ge("arrivalDate",c.getTime()).query();
         return wkReturn;
+    }
+
+    @NonNull
+    private Calendar getCalenda(int dayOfWeek) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK,dayOfWeek);
+        return c;
     }
 
     @Override

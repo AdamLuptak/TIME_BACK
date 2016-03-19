@@ -35,7 +35,7 @@ public class WorkTimeRecordListActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_time_record_list);
         try {
-            List workTimeRecords = workTimeRecordRepo.gettWorkTimeRecords();
+            List workTimeRecords = workTimeRecordRepo.getWorkTimeRecords();
             WorkTimeRecordListAdapter workTimeRecordListAdapter = new WorkTimeRecordListAdapter(
                     getApplicationContext(), workTimeRecords);
             listViewWorkTimerecord.setAdapter(workTimeRecordListAdapter);

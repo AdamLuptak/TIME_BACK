@@ -56,6 +56,11 @@ public class TimeController implements ITimeController {
 
     @Override
     public void saveRecord(Date dateForSave) throws SQLException {
+
+        long arrivalTimeL = 1455519600000l;
+        Date date = new Date(arrivalTimeL);
+        WorkTimeRecord workTimeRecord1 = new WorkTimeRecord(date);
+        workTimeRecordRepo.saveWorkTimeRecord(workTimeRecord1);
         WorkTimeRecord lastWorkTimeRecord = workTimeRecordRepo.getLastWorkTimeRecord();
         if (lastWorkTimeRecord != null && lastWorkTimeRecord.getArrivalTimeDate() != null && lastWorkTimeRecord.getLeaveTimeDate() == null) {
             lastWorkTimeRecord.setLeaveTimeDate(dateForSave);

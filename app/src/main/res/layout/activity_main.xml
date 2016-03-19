@@ -157,16 +157,15 @@
             android:id="@+id/doRecordButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.79"
+            android:layout_weight="0.76"
             android:onClick="doRecord"
-
             android:text="@string/arrivalTimeString" />
 
         <Button
             android:id="@+id/showStatisticsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.21"
+            android:layout_weight="1.24"
             android:onClick="showStatistics"
             android:text="@string/showStatisticsString" />
     </LinearLayout>
