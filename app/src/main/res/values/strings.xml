@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">TimeManagerUltimate</string>
+
+    <string name="arrivalTimeString">Add arrivalTime</string>
+    <string name="startServiceString">Start service</string>
+    <string name="stopServiceString">Stop service</string>
+    <string name="leaveTimeString">Add leaveTime</string>
+    <string name="showStatisticsString">Statistic</string>
+
+    <string name="productbutton_save_label">Save</string>
+    <string name="productbutton_delete_label">Delete</string>
+    <string name="productbutton_add_label">New</string>
+
+    <string name="list_product_code_format" formatted="false">%s</string>
+    <string name="list_product_description_format" formatted="false">%s</string>
+    <string name="list_product_price_format" formatted="false">%s</string>
+    <string name="list_product_work_time" formatted="false">%s</string>
+
+    <string name="productid_label">Code</string>
+    <string name="arrival_time_label">ArrivalTime</string>
+    <string name="leave_time_label">LeaveTime</string>
+    <string name="day_of_week_label">dayOfWeek</string>
+    <string name="work_time_label">dayOfWeek</string>
 </resources>

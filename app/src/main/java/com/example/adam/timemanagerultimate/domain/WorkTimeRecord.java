@@ -1,10 +1,12 @@
-package com.example.adam.timemanagerultimate.entity;
+package com.example.adam.timemanagerultimate.domain;
 
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * Created by adam on 15.3.2016.
  */
@@ -33,6 +35,10 @@ public class WorkTimeRecord implements Serializable {
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getArrivalTimeDate() {

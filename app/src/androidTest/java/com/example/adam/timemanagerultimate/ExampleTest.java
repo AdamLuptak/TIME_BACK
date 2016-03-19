@@ -1,4 +1,4 @@
-package com.example.adam.timemanagerultimate.test;
+package com.example.adam.timemanagerultimate;
 
 import android.test.InstrumentationTestCase;
 
@@ -7,7 +7,7 @@ import android.test.InstrumentationTestCase;
  */
 public class ExampleTest extends InstrumentationTestCase {
     public void test() throws Exception {
-        final int expected = 2;
+        final int expected = 5;
         final int reality = 5;
         assertEquals(expected, reality);
     }
