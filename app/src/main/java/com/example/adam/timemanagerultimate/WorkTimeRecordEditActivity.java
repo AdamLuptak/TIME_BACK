@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -52,12 +53,10 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
     private WorkTimeRecord selectedWorkTimeRecord;
 
     private Calendar cal;
-    private int day;
-    private int month;
-    private int year;
-
     private TimePickerDialog tmDialog;
     private DatePickerDialog dtDialog;
+
+    private Date dateForUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,32 +66,20 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
         if (selectedWorkTimeRecord != null) {
             loadSelectedWorkTimeRecord(selectedWorkTimeRecord);
         }
-        buttonWorkTimeRecordSave.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        buttonWorkTimeRecordSave.setOnClickListener(e -> {
                 try {
-
                     if (selectedWorkTimeRecord == null) {
-
                         WorkTimeRecord workTimeRecord;
                         try {
-                            workTimeRecord = new WorkTimeRecord();
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd.mm.yyyy HH.mm.ss");
-                            // Date date = sdf.parse(_editTextArrivaltime.getText().toString());
-                            Date date = new Date();
-                            workTimeRecord.setArrivalTimeDate(date);
-                            // date = sdf.parse(_editTextArrivaltime.getText().toString());
-                            workTimeRecord.setLeaveTimeDate(date);
-                            workTimeRecordRepo.saveWorkTimeRecord(workTimeRecord);
-                        } catch (Exception e) {
+                           // workTimeRecordRepo.saveWorkTimeRecord(workTimeRecord);
+                        } catch (Exception exp) {
                             alertBox();
                             throw new WrongFormatTime("Wrong formated arrival or leave time");
                         }
                     } else {
                         try {
                             workTimeRecordRepo.updateWorkTimeRecord(selectedWorkTimeRecord);
-                        } catch (Exception e) {
+                        } catch (Exception exp) {
                             alertBox();
                             throw new WrongFormatTime("Wrong formated arrival or leave time");
                         }
@@ -102,69 +89,62 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivityForResult(intent, 0);
                     finish();
+                } catch (Exception exp) {
+                    exp.printStackTrace();
+                }
+        });
 
+        buttonWorkTimeRecordDelete.setOnClickListener(view -> {
+            if (selectedWorkTimeRecord != null) {
+                try {
+                    workTimeRecordRepo.deleteWorkTimeRecord(selectedWorkTimeRecord);
+                    Intent intent = new Intent(WorkTimeRecordEditActivity.this,
+                            WorkTimeRecordListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivityForResult(intent, 0);
+                    finish();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
 
-        buttonWorkTimeRecordDelete.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (selectedWorkTimeRecord != null) {
-                    try {
-                        workTimeRecordRepo.deleteWorkTimeRecord(selectedWorkTimeRecord);
-                        Intent intent = new Intent(WorkTimeRecordEditActivity.this,
-                                WorkTimeRecordListActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivityForResult(intent, 0);
-                        finish();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        editTextArrivaltime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 
         TimePickerDialog.OnTimeSetListener listenerTimePicker = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                selectedWorkTimeRecord.getArrivalTimeDate().setHours(hourOfDay);
-                selectedWorkTimeRecord.getArrivalTimeDate().setMinutes(minute);
-                editTextArrivaltime.setText(sdf1.format(selectedWorkTimeRecord.getArrivalTimeDate()).toString());
+                dateForUpdate.setHours(hourOfDay);
+                dateForUpdate.setMinutes(minute);
+                loadSelectedWorkTimeRecord(selectedWorkTimeRecord);
             }
         };
 
         DatePickerDialog.OnDateSetListener listenerDatePicker = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                selectedWorkTimeRecord.getArrivalTimeDate().setYear(year);
-                selectedWorkTimeRecord.getArrivalTimeDate().setMonth(monthOfYear);
-                selectedWorkTimeRecord.getArrivalTimeDate().setDate(dayOfMonth);
+                dateForUpdate.setYear(year);
+                dateForUpdate.setMonth(monthOfYear);
+                dateForUpdate.setDate(dayOfMonth);
                 tmDialog.show();
             }
         };
 
-        dtDialog = new DatePickerDialog(this, 2,listenerDatePicker ,  cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH));
-        tmDialog = new TimePickerDialog(this, 2, listenerTimePicker,  cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false);
+        dtDialog = new DatePickerDialog(this, 1, listenerDatePicker, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        tmDialog = new TimePickerDialog(this, 1, listenerTimePicker, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false);
 
-        editTextArrivaltime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DateDialog();
-            }
+        editTextArrivaltime.setOnClickListener((e) -> {
+            editBoxtListenerFunction(e);
         });
+        editTextLeaveTime.setOnClickListener((e) -> {
+            editBoxtListenerFunction(e);
+        });
+    }
+
+    private void editBoxtListenerFunction(View e) {
+        dateForUpdate = (R.id.editTextArrivalTime== e.getId())? selectedWorkTimeRecord.getArrivalTimeDate() : selectedWorkTimeRecord.getLeaveTimeDate();
+        DateDialog();
     }
 
     public void DateDialog() {
@@ -199,12 +179,12 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
     private void loadSelectedWorkTimeRecord(WorkTimeRecord workTimeRecord) {
         if (workTimeRecord != null) {
             editTextArrivaltime.setText(sdf1.format(workTimeRecord.getArrivalTimeDate()).toString());
-                editTextLeaveTime.setText(sdf1.format(workTimeRecord.getLeaveTimeDate()).toString());
-            } else {
-                editTextLeaveTime.setText("null");
-            }
-            cal = Calendar.getInstance();
-            cal.setTime(selectedWorkTimeRecord.getArrivalTimeDate());
+            editTextLeaveTime.setText(sdf1.format(workTimeRecord.getLeaveTimeDate()).toString());
+        } else {
+            editTextLeaveTime.setText("null");
+        }
+        cal = Calendar.getInstance();
+        cal.setTime(selectedWorkTimeRecord.getArrivalTimeDate());
     }
 }
 

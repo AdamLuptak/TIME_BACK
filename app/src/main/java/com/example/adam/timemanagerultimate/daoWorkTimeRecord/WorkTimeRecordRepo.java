@@ -79,7 +79,7 @@ public class WorkTimeRecordRepo implements IWorkTimeRecordRepo {
     @NonNull
     private Calendar getCalenda(int dayOfWeek) {
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,dayOfWeek);
+        c.set(Calendar.DAY_OF_MONTH,dayOfWeek);
         return c;
     }
 
