@@ -15,7 +15,7 @@ public interface ITimeController {
     public void setLeaveTime(Date leaveTime) throws SQLException;
     public List<WorkTimeRecord> getAllWorkTimeForThisWeek() throws SQLException;
     public String getGoHomeOV();
-    public String getOverTime();
-    public String getGoHome();
+    public String getOverTime() throws SQLException;
+    public String getGoHomeTime() throws SQLException;
     public void saveRecord(Date dateForSave) throws SQLException;
 }

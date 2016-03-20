@@ -24,8 +24,12 @@ public interface IWorkTimeRecordRepo {
 
     public List<WorkTimeRecord> getAlldaysForThisWeek() throws  SQLException;
 
-    public WorkTimeRecord getFirstWorkTimeForThisDay(Date today) throws  SQLException;
+    public WorkTimeRecord getFirstWorkTimeForThisDay() throws  SQLException;
 
     public WorkTimeRecord getLastWorkTimeRecord()throws  SQLException;
+
+    public List<WorkTimeRecord> getAllWorkTimeRecordsForThisDay(int DayNumber)throws  SQLException;
+
+
 
 }

@@ -40,8 +40,21 @@ public class WorkTimeRecordRepo implements IWorkTimeRecordRepo {
 
     @Override
     public WorkTimeRecord getLastWorkTimeRecord() throws SQLException {
-        Calendar c = getCalenda(Calendar.MONDAY);
+        Calendar c = getCalendar(Calendar.MONDAY);
         return productDao.queryBuilder().orderBy("arrivalDate", false).where().ge("arrivalDate", c.getTime()).queryForFirst();
+    }
+
+    @Override
+    public List<WorkTimeRecord> getAllWorkTimeRecordsForThisDay(int dayNumber) throws SQLException {
+        Calendar cGe = getCalendar(dayNumber);
+        Calendar cLt = getCalendar(dayNumber + 1);
+        List<WorkTimeRecord> wkReturn = null;
+        if(dayNumber == 7){
+            wkReturn =  productDao.queryBuilder().where().ge("arrivalDate",cGe.getTime()).query();
+        }else{
+            wkReturn =  productDao.queryBuilder().where().ge("arrivalDate",cGe.getTime()).and().lt("arrivalDate",cLt.getTime()).query();
+        }
+        return wkReturn;
     }
 
     @Override
@@ -71,23 +84,22 @@ public class WorkTimeRecordRepo implements IWorkTimeRecordRepo {
 
     @Override
     public List<WorkTimeRecord> getAlldaysForThisWeek() throws SQLException {
-        Calendar c = getCalenda(Calendar.MONDAY);
+        Calendar c = getCalendar(Calendar.MONDAY);
         List<WorkTimeRecord> wkReturn =  productDao.queryBuilder().where().ge("arrivalDate",c.getTime()).query();
         return wkReturn;
     }
 
     @NonNull
-    private Calendar getCalenda(int dayOfWeek) {
+    private Calendar getCalendar(int dayOfWeek) {
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_MONTH,dayOfWeek);
         return c;
     }
 
     @Override
-    public WorkTimeRecord getFirstWorkTimeForThisDay(Date today) throws SQLException {
-        DateFormat sdf1 =  new SimpleDateFormat("EEE-MM-dd-yyyy");
-        String todayDay = sdf1.format(today);
-        List<WorkTimeRecord> wkReturn =  productDao.queryBuilder().orderBy("arrivalDate",true).where().eq("dayOfWeek", todayDay).query();
-        return (wkReturn.isEmpty()) ? null:wkReturn.get(0) ;
+    public WorkTimeRecord getFirstWorkTimeForThisDay() throws SQLException {
+        Calendar c = getCalendar(Calendar.DAY_OF_MONTH);
+        WorkTimeRecord wkReturn =  productDao.queryBuilder().orderBy("arrivalDate",true).where().ge("arrivalDate", c.getTime()).queryForFirst();
+        return wkReturn ;
     }
 }

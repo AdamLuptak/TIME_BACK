@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.adam.timemanagerultimate.controller.TimeController;
 import com.example.adam.timemanagerultimate.daoWorkTimeRecord.IWorkTimeRecordRepo;
 import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
+import com.example.adam.timemanagerultimate.mockWorkTimeRecords.MockWorkTimeRecord;
 
 import org.roboguice.shaded.goole.common.base.Predicates;
 
@@ -47,7 +48,7 @@ public class MainActivity extends RoboActivity {
     @InjectView(R.id.stopServiceButton)
     private Button stopServiceButton;
 
-    @InjectView(R.id.goHomeNumber)
+    @InjectView(R.id.goHomeOvNumber)
     private TextView goHomeOv;
 
     @InjectView(R.id.goHomeNumber)
@@ -60,17 +61,39 @@ public class MainActivity extends RoboActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        MockWorkTimeRecord mockWorkTimeRecord = new MockWorkTimeRecord(workTimeRecordRepo);
+//        try {
+//            mockWorkTimeRecord.generateData();
+//            timeController.getOverTime();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+
         Intent intentEdit = this.getIntent();
         String inWorkBefore = intentEdit.getStringExtra("inWork");
         if (inWorkBefore != null) {
             setupDoRecordButton();
             this.inWork = Boolean.valueOf(inWorkBefore);
         }
+        updateTimesFromDB();
+    }
+
+    private void updateTimesFromDB() {
+        try {
+            overTime.setText(timeController.getOverTime());
+            goHome.setText(timeController.getGoHomeTime());
+            goHomeOv.setText(timeController.getGoHomeOV());
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void doRecord(View view) throws SQLException {
-        setupDoRecordButton();
         timeController.saveRecord(new Date());
+        setupDoRecordButton();
         Log.e("sdfs", timeController.getAllWorkTimeForThisWeek().toString());
     }
 
@@ -79,6 +102,7 @@ public class MainActivity extends RoboActivity {
             doRecordButton.setText(R.string.leaveTimeString);
         } else {
             doRecordButton.setText(R.string.arrivalTimeString);
+            updateTimesFromDB();
         }
         this.inWork = !this.inWork;
     }

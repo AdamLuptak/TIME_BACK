@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WorkTimeRecordEditActivity" />
+        <activity
+            android:name=".WorkTimeRecordEditActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".WorkTimeRecordListActivity"></activity>
     </application>
 
