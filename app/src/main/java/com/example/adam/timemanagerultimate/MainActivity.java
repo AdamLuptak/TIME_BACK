@@ -1,6 +1,8 @@
 package com.example.adam.timemanagerultimate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import com.example.adam.timemanagerultimate.daoWorkTimeRecord.IWorkTimeRecordRep
 import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
 import com.example.adam.timemanagerultimate.mockWorkTimeRecords.MockWorkTimeRecord;
 
+import org.joda.time.DateTime;
 import org.roboguice.shaded.goole.common.base.Predicates;
 
 import java.sql.SQLException;
@@ -62,22 +65,59 @@ public class MainActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        MockWorkTimeRecord mockWorkTimeRecord = new MockWorkTimeRecord(workTimeRecordRepo);
+
 //        try {
-//            mockWorkTimeRecord.generateData();
-//            timeController.getOverTime();
+//            workTimeRecordRepo.saveWorkTimeRecord(new WorkTimeRecord(new DateTime(1458543600000l).toDate(), new Date(1458568800000l)));
+//            workTimeRecordRepo.saveWorkTimeRecord(new WorkTimeRecord(new Date(1458626400000l), new Date(1458655200000l)));
+//            workTimeRecordRepo.saveWorkTimeRecord(new WorkTimeRecord(new Date(1458720000000l), new Date(1458756000000l)));
+//            workTimeRecordRepo.saveWorkTimeRecord(new WorkTimeRecord(new Date(1458802800000l), new Date(1458831600000l)));
+//            workTimeRecordRepo.saveWorkTimeRecord(new WorkTimeRecord(new Date(1458885600000l)));
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
 
-
         Intent intentEdit = this.getIntent();
         String inWorkBefore = intentEdit.getStringExtra("inWork");
         if (inWorkBefore != null) {
-            setupDoRecordButton();
-            this.inWork = Boolean.valueOf(inWorkBefore);
+            setupDoRecordButtonText(Boolean.valueOf(inWorkBefore));
         }
-        updateTimesFromDB();
+        if (!(timeController.isMonday())) {
+            if (timeController.isNullSomOfLeaveDateForYesterday()) {
+                showStatisticsButton.callOnClick();
+                return;
+            }
+        }
+
+        if (timeController.findFirstDateForThisDay()) {
+            timeController.calculateTimes();
+
+            if (timeController.isLeaveTimeForLastDayNull()) {
+                //set AddLeaveTime
+                this.inWork = true;
+                setupDoRecordButtonText(this.inWork);
+            } else {
+                this.inWork = false;
+                setupDoRecordButtonText(this.inWork);
+            }
+        } else {
+
+        }
+
+        try {
+            overTime.setText(timeController.getOverTime());
+            goHome.setText(timeController.getGoHomeTime());
+            goHomeOv.setText(timeController.getGoHomeOV());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void FillDB() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (prefs.getBoolean("firstRun", true)) {
+
+            prefs.edit().putBoolean("firstRun", false).commit();
+        }
     }
 
     private void updateTimesFromDB() {
@@ -93,7 +133,9 @@ public class MainActivity extends RoboActivity {
 
     public void doRecord(View view) throws SQLException {
         timeController.saveRecord(new Date());
-        setupDoRecordButton();
+        this.inWork = !this.inWork;
+        setupDoRecordButtonText(this.inWork);
+        updateTimesFromDB();
         Log.e("sdfs", timeController.getAllWorkTimeForThisWeek().toString());
     }
 
@@ -106,6 +148,15 @@ public class MainActivity extends RoboActivity {
         }
         this.inWork = !this.inWork;
     }
+
+    private void setupDoRecordButtonText(boolean doRecord) {
+        if (this.inWork) {
+            doRecordButton.setText(R.string.leaveTimeString);
+        } else {
+            doRecordButton.setText(R.string.arrivalTimeString);
+        }
+    }
+
 
     public void showStatistics(View view) {
         Intent intent = new Intent(this, WorkTimeRecordListActivity.class);

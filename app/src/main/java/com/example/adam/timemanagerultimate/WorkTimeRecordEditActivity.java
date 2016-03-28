@@ -6,10 +6,12 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Selection;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -49,7 +51,7 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
     @InjectView(R.id.buttonWorkTimeRecordDelete)
     private Button buttonWorkTimeRecordDelete;
 
-    DateFormat sdf1 = new SimpleDateFormat("EEE-MM-dd-yyyy hh-mm-ss");
+    DateFormat sdf1 = new SimpleDateFormat("EEE-MM-dd-yyyy HH-mm-ss");
     private WorkTimeRecord selectedWorkTimeRecord;
     private Calendar cal;
     private TimePickerDialog tmDialog;
@@ -133,7 +135,7 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
         });
 
         dtDialog = new DatePickerDialog(this, 1, listenerDatePicker, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        tmDialog = new TimePickerDialog(this, 1, listenerTimePicker, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false);
+        tmDialog = new TimePickerDialog(this, 1, listenerTimePicker, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);
 
         editTextArrivaltime.setOnClickListener((e) -> {
             editBoxtListenerFunction(e);
@@ -144,6 +146,9 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
     }
 
     private void editBoxtListenerFunction(View e) {
+        if(selectedWorkTimeRecord.getLeaveTimeDate() == null){
+            selectedWorkTimeRecord.setLeaveTimeDate(new Date());
+        }
         dateForUpdate = (R.id.editTextArrivalTime == e.getId()) ? selectedWorkTimeRecord.getArrivalTimeDate() : selectedWorkTimeRecord.getLeaveTimeDate();
         DateDialog();
     }
@@ -173,7 +178,10 @@ public class WorkTimeRecordEditActivity extends RoboActivity {
 
     private void loadSelectedWorkTimeRecord(WorkTimeRecord workTimeRecord) {
         editTextArrivaltime.setText(sdf1.format(workTimeRecord.getArrivalTimeDate()).toString());
-        editTextLeaveTime.setText(sdf1.format(workTimeRecord.getLeaveTimeDate()).toString());
+        if(workTimeRecord.getLeaveTimeDate() != null) {
+            editTextLeaveTime.setText(sdf1.format(workTimeRecord.getLeaveTimeDate()).toString());
+        }
     }
+
 }
 

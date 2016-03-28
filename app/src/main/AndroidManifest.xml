@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".WorkTimeRecordEditActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:focusableInTouchMode="false" />
         <activity android:name=".WorkTimeRecordListActivity"></activity>
     </application>
 

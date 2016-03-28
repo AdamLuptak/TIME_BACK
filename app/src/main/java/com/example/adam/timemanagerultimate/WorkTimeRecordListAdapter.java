@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,15 +50,11 @@ public class WorkTimeRecordListAdapter extends BaseAdapter {
     @SuppressLint("StringFormatMatches")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
         ViewHolder holder = null;
         LayoutInflater inflater = LayoutInflater.from(_context);
-
         if (convertView == null) {
-
             convertView = inflater.inflate(R.layout.work_time_record_list_row, null);
             holder = new ViewHolder();
-
             holder.arrivalTime = (TextView) convertView
                     .findViewById(R.id.arrivalTime);
             holder.leaveTime = (TextView) convertView
@@ -69,26 +67,53 @@ public class WorkTimeRecordListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         WorkTimeRecord workTimeRecord = (WorkTimeRecord) _productList.get(position);
         SimpleDateFormat sdf = new SimpleDateFormat("HH.mm.ss");
+        SimpleDateFormat sdfday = new SimpleDateFormat("dd/MM");
+
         if (workTimeRecord != null) {
             try {
-
                 holder.arrivalTime.setText(String.format(_context
                         .getString(R.string.list_product_code_format,
                                 sdf.format(workTimeRecord.getArrivalTimeDate()))));
-                holder.leaveTime.setText(String
-                        .format(_context.getString(
-                                R.string.list_product_description_format,
-                                sdf.format(workTimeRecord.getLeaveTimeDate()))));
-                holder.dayOfWeek.setText("sd");
-                holder.workTime.setText("sd");
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(workTimeRecord.getArrivalTimeDate());
+                String dayString = this.getNameOfDayint(cal.get(Calendar.DAY_OF_WEEK));
+                holder.dayOfWeek.setText(dayString + sdfday.format(workTimeRecord.getArrivalTimeDate()));
+                if (workTimeRecord.getLeaveTimeDate() != null) {
+                    holder.leaveTime.setText(String
+                            .format(_context.getString(
+                                    R.string.list_product_description_format,
+                                    sdf.format(workTimeRecord.getLeaveTimeDate()))));
+                    Long workedHours = workTimeRecord.getLeaveTimeDate().getTime() - workTimeRecord.getArrivalTimeDate().getTime();
+                    holder.workTime.setText(sdf.format(new Date(workedHours - 3600000l)).toString());
+                } else {
+                    holder.workTime.setText("You are in work");
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
         return convertView;
+    }
+
+    private String getNameOfDayint(int dow) {
+        switch (dow) {
+            case Calendar.MONDAY:
+                return "Monday";
+            case Calendar.TUESDAY:
+                return "Tuesday";
+            case Calendar.WEDNESDAY:
+                return "Wednesday";
+            case Calendar.THURSDAY:
+                return "Thursday";
+            case Calendar.FRIDAY:
+                return "Friday";
+            case Calendar.SATURDAY:
+                return "Saturday";
+            case Calendar.SUNDAY:
+                return "Sunday";
+        }
+        return "##:##";
     }
 }

@@ -1,8 +1,6 @@
 package com.example.adam.timemanagerultimate.daoWorkTimeRecord;
 
 
-
-
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -11,6 +9,8 @@ import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.GenericRawResults;
 
+
+import org.joda.time.DateTime;
 
 import java.sql.SQLException;
 
@@ -46,15 +46,51 @@ public class WorkTimeRecordRepo implements IWorkTimeRecordRepo {
 
     @Override
     public List<WorkTimeRecord> getAllWorkTimeRecordsForThisDay(int dayNumber) throws SQLException {
-        Calendar cGe = getCalendar(dayNumber);
-        Calendar cLt = getCalendar(dayNumber + 1);
+
+//        Calendar cGe = Calendar.getInstance();
+//        Date date = new Date();
+//        cGe.setTime(date);
+//        cGe.set(Calendar.DAY_OF_WEEK, dayNumber);
+//        cGe.set(Calendar.HOUR_OF_DAY, 0);
+//        cGe.set(Calendar.MINUTE, 0);
+//        cGe.set(Calendar.SECOND, 0);
+//        Date ArrivalTime = new Date(cGe.getTimeInMillis());
+//
+//        Calendar cLt = getCalendarDay(dayNumber + 1);
+//        cGe.setTime(date);
+//        cGe.set(Calendar.DAY_OF_WEEK, dayNumber + 1);
+//        cGe.set(Calendar.HOUR_OF_DAY, 0);
+//        cGe.set(Calendar.MINUTE, 0);
+//        cGe.set(Calendar.SECOND, 0);
+//        Date NexDayTime = new Date(cGe.getTimeInMillis());
+
+        Date arrivalTime  = DateTime.now().withDayOfWeek(dayNumber).toDate();
+        arrivalTime.setHours(0);
+        Date nexDayTime = DateTime.now().withDayOfWeek(dayNumber + 1).toDate();
+        nexDayTime.setHours(0);
+
         List<WorkTimeRecord> wkReturn = null;
-        if(dayNumber == 7){
-            wkReturn =  productDao.queryBuilder().where().ge("arrivalDate",cGe.getTime()).query();
-        }else{
-            wkReturn =  productDao.queryBuilder().where().ge("arrivalDate",cGe.getTime()).and().lt("arrivalDate",cLt.getTime()).query();
-        }
+        wkReturn = productDao.queryBuilder().where().ge("arrivalDate", arrivalTime).and().lt("arrivalDate", nexDayTime).query();
         return wkReturn;
+    }
+
+    @Override
+    public boolean isLeaveTimeForLastDayNull() throws SQLException {
+        Date todayDate = DateTime.now().toDate();
+        todayDate.setHours(0);
+        WorkTimeRecord workTimeRecord = productDao.queryBuilder().orderBy("arrivalDate", false).where().ge("arrivalDate", todayDate).queryForFirst();
+        if(workTimeRecord == null ){
+            return false;
+        }
+        return (workTimeRecord.getLeaveTimeDate() != null) ? false : true;
+    }
+
+    @Override
+    public boolean isNullSomOfLeaveDateForYesterday() throws SQLException {
+        Date todayDate = DateTime.now().minusDays(1).toDate();
+        todayDate.setHours(0);
+        WorkTimeRecord workTimeRecord = productDao.queryBuilder().orderBy("leaveDate", false).where().ge("leaveDate", todayDate).queryForFirst();
+        return (workTimeRecord == null) ? true : false;
     }
 
     @Override
@@ -85,21 +121,30 @@ public class WorkTimeRecordRepo implements IWorkTimeRecordRepo {
     @Override
     public List<WorkTimeRecord> getAlldaysForThisWeek() throws SQLException {
         Calendar c = getCalendar(Calendar.MONDAY);
-        List<WorkTimeRecord> wkReturn =  productDao.queryBuilder().where().ge("arrivalDate",c.getTime()).query();
+        List<WorkTimeRecord> wkReturn = productDao.queryBuilder().where().ge("arrivalDate", c.getTime()).query();
         return wkReturn;
     }
 
     @NonNull
     private Calendar getCalendar(int dayOfWeek) {
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_MONTH,dayOfWeek);
+        c.set(Calendar.DAY_OF_MONTH, dayOfWeek);
+        return c;
+    }
+
+
+    @NonNull
+    private Calendar getCalendarDay(int dayOfWeek) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK, dayOfWeek);
         return c;
     }
 
     @Override
     public WorkTimeRecord getFirstWorkTimeForThisDay() throws SQLException {
-        Calendar c = getCalendar(Calendar.DAY_OF_MONTH);
-        WorkTimeRecord wkReturn =  productDao.queryBuilder().orderBy("arrivalDate",true).where().ge("arrivalDate", c.getTime()).queryForFirst();
-        return wkReturn ;
+        Date todayDate = DateTime.now().toDate();
+        todayDate.setHours(0);
+        WorkTimeRecord wkReturn = productDao.queryBuilder().orderBy("arrivalDate", true).where().ge("arrivalDate",todayDate).queryForFirst();
+        return wkReturn;
     }
 }

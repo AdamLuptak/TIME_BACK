@@ -31,7 +31,7 @@ public class DbHelper extends OrmLiteSqliteOpenHelper {
     @Inject
     public DbHelper(Context context) {
         super(context, DATABASENAME, null, DATABASEVERSION);
-        resetDatabase(WorkTimeRecord.class);
+        //resetDatabase(WorkTimeRecord.class);
     }
 
     /**

@@ -1,28 +1,18 @@
 package com.example.adam.timemanagerultimate.daoWorkTimeRecord;
 
-import android.content.Context;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.InstrumentationTestCase;
-import android.test.ServiceTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.util.Log;
 
 import com.example.adam.timemanagerultimate.MainActivity;
+import com.example.adam.timemanagerultimate.controller.TimeController;
 import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
-import com.j256.ormlite.dao.Dao;
+import com.google.inject.Inject;
 
-import junit.framework.TestCase;
-
+import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Test;
 
-import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.Date;
-
-import javax.inject.Inject;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by adam on 17.3.2016.
@@ -35,10 +25,17 @@ public class WorkTimeRecordRepoTest extends ActivityInstrumentationTestCase2<Mai
         super(MainActivity.class);
     }
 
+
+    @Before
+    public void setupDB() {
+
+    }
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         this.mainActivity = getActivity();
+
     }
 
     @SmallTest

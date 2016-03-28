@@ -12,6 +12,8 @@ import java.util.List;
  */
 public interface IWorkTimeRecordRepo {
 
+    boolean isNullSomOfLeaveDateForYesterday() throws SQLException;
+
     public List getWorkTimeRecords() throws SQLException;
 
     public WorkTimeRecord getWorkTimeRecord(String id) throws SQLException;
@@ -30,6 +32,6 @@ public interface IWorkTimeRecordRepo {
 
     public List<WorkTimeRecord> getAllWorkTimeRecordsForThisDay(int DayNumber)throws  SQLException;
 
-
+    public boolean isLeaveTimeForLastDayNull() throws SQLException;
 
 }
