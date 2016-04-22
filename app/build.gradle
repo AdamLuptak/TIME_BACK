@@ -28,7 +28,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 dependencies {
 
@@ -42,6 +41,8 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     compile 'net.danlew:android.joda:2.9.2'
     compile 'net.danlew:android.joda:2.9.2'
+    compile 'com.github.markushi:circlebutton:1.1'
+    compile 'com.android.support:recyclerview-v7:23.2.0'
 
 }
 

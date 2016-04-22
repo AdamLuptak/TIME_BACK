@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.adam.timemanagerultimate">
+
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launchers"
@@ -12,6 +14,7 @@
         <meta-data
             android:name="roboguice.modules"
             android:value="com.example.adam.timemanagerultimate.daoWorkTimeRecord.BaseModule" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,17 +26,22 @@
             android:name=".WorkTimeRecordEditActivity"
             android:focusableInTouchMode="false" />
         <activity android:name=".WorkTimeRecordListActivity" />
+
         <service
             android:name=".service.UpdaterService"
             android:exported="false" />
+
         <receiver
             android:name=".broadcast.BootReciever"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
-                <action android:name="start.alarm"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="start.alarm" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".Main2Activity"></activity>
     </application>
+
 </manifest>
