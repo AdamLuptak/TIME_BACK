@@ -1,5 +1,7 @@
 package com.example.adam.timemanagerultimate;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -15,6 +17,7 @@ import com.example.adam.timemanagerultimate.controller.TimeController;
 import com.example.adam.timemanagerultimate.daoWorkTimeRecord.IWorkTimeRecordRepo;
 import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
 import com.example.adam.timemanagerultimate.mockWorkTimeRecords.MockWorkTimeRecord;
+import com.example.adam.timemanagerultimate.service.UpdaterService;
 
 import org.joda.time.DateTime;
 import org.roboguice.shaded.goole.common.base.Predicates;
@@ -165,11 +168,22 @@ public class MainActivity extends RoboActivity {
     }
 
     public void startUpdateService(View view) {
-
+        Intent actIntent = new Intent(this, UpdaterService.class);
+        PendingIntent pi = PendingIntent.getService(this, 0, actIntent, 0);
+        Log.e("sdfs", "start service");
+        AlarmManager am = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis(),
+                5000, // 1000 * 60 * 15,
+                pi);
     }
 
     public void stopUpdateService(View view) {
-
+        Log.e("sdfs", "stop service");
+        Intent intentstop = new Intent(this, UpdaterService.class);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        PendingIntent displayIntent = PendingIntent.getService(this.getApplicationContext(), 0, intentstop, 0);
+        alarmManager.cancel(displayIntent);
     }
 
 

@@ -50,6 +50,7 @@ public class TimeController implements ITimeController {
     @Override
     public String getGoHomeOV() {
         long goHomeLonGSum = goHomeLong - overTime;
+        goHomeOv = goHomeLonGSum;
         return (goHomeLonGSum > 0) ? sdf1.format(new Date(goHomeLonGSum)).toString() : "##:##:##";
     }
 
@@ -141,5 +142,25 @@ public class TimeController implements ITimeController {
     public boolean isMonday() {
         int dayOfWeek = DateTime.now().getDayOfWeek();
         return (dayOfWeek == 1) ? true : false;
+    }
+
+    public long getGoHomeLong() {
+        return goHomeLong;
+    }
+
+    public void setGoHomeLong(long goHomeLong) {
+        this.goHomeLong = goHomeLong;
+    }
+
+    public long getGoHomeOv() {
+        return goHomeOv;
+    }
+
+    public void setGoHomeOv(long goHomeOv) {
+        this.goHomeOv = goHomeOv;
+    }
+
+    public void setOverTime(long overTime) {
+        this.overTime = overTime;
     }
 }
