@@ -7,8 +7,8 @@
     <string name="drawer_close">Close</string>
 
     <string name="nav_item_home">Home</string>
-    <string name="nav_item_friends">Friends</string>
-    <string name="nav_item_notifications">Messages</string>
+    <string name="nav_item_friends">All records</string>
+    <string name="nav_item_notifications">Setup</string>
 
     <string name="title_work_times">Worktime - records</string>
     <string name="title_setup">Setup</string>
@@ -20,7 +20,7 @@
     </string-array>
 
     <string name="title_messages">Messages</string>
-    <string name="title_friends">Friends</string>
+    <string name="title_friends">Setup</string>
     <string name="title_home">Home</string>
 
     <!-- TODO: Remove or change this placeholder text -->

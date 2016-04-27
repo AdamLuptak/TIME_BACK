@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import com.example.adam.timemanagerultimate.controller.TimeController;
+import com.example.adam.timemanagerultimate.daoWorkTimeRecord.IWorkTimeRecordRepo;
+
+import javax.inject.Inject;
 
 import at.markushi.ui.CircleButton;
 import roboguice.fragment.RoboFragment;
@@ -18,6 +24,11 @@ public class HomeFragment extends RoboFragment {
     Context thiscontext;
 
 
+    @Inject
+    private IWorkTimeRecordRepo workTimeRecordRepo;
+
+    @Inject
+    private TimeController timeController;
 
 
     public HomeFragment() {
@@ -34,6 +45,7 @@ public class HomeFragment extends RoboFragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         thiscontext = container.getContext();
+
 
         final Animation animRotate = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_rotate);
         CircleButton btnScale = (CircleButton) rootView.findViewById(R.id.button2);

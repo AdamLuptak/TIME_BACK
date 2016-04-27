@@ -22,11 +22,11 @@ public class BootReciever extends BroadcastReceiver {
         Intent actIntent = new Intent(context, UpdaterService.class);
         PendingIntent pi = PendingIntent.getService(context, 0, actIntent, 0);
 
-        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis(),
-                5000, // 1000 * 60 * 15,s
-                pi);
+//        AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+//        am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+//                System.currentTimeMillis(),
+//                5000, // 1000 * 60 * 15,s
+//                pi);
 
     }
 }

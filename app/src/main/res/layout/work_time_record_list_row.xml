@@ -2,69 +2,9 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/black"
+    android:background="@color/textColorPrimary"
+    android:alpha="0.9"
     android:padding="10dp">
-
-    <!--<TableRow>-->
-    <!--<ImageView-->
-    <!--android:id="@+id/imageView1"-->
-    <!--android:layout_width="20dp"-->
-    <!--android:layout_height="20dp"-->
-    <!--android:layout_weight=".5"-->
-    <!--android:src="@drawable/icon" />-->
-
-
-    <!--<TableRow-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight=".5"-->
-    <!--android:background="@android:color/transparent">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/arrivalTime"-->
-    <!--android:layout_width="0px"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight=".5"-->
-    <!--android:height="20dip"-->
-    <!--android:gravity="left"-->
-    <!--android:text="ArrivalTime:"-->
-    <!--android:textColor="@android:color/white" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/leaveTime"-->
-    <!--android:layout_width="0px"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight=".5"-->
-    <!--android:gravity="left"-->
-    <!--android:text="LeaveTime:"-->
-    <!--android:textColor="@android:color/white" />-->
-    <!--</TableRow>-->
-
-
-    <!--&lt;!&ndash;<TableRow&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:background="@android:color/transparent">&ndash;&gt;-->
-
-    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-    <!--&lt;!&ndash;android:id="@+id/dayOfWeek"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_width="0px"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_weight=".5"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:gravity="left"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:text="WorkTime:"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:textColor="@android:color/white" />&ndash;&gt;-->
-
-    <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-    <!--&lt;!&ndash;android:id="@+id/workTime"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_width="0px"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:layout_weight=".5"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:gravity="left"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:text="WorkTime:"&ndash;&gt;-->
-    <!--&lt;!&ndash;android:textColor="@android:color/white" />&ndash;&gt;-->
-    <!--&lt;!&ndash;</TableRow>&ndash;&gt;-->
-    <!--</TableRow>-->
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -74,7 +14,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="10"
             android:orientation="vertical">
 
@@ -83,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/icon" />
+                android:src="@drawable/ic_access_time_white_48dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,29 +42,31 @@
                     android:id="@+id/arrivalTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_weight="5"
+                    android:layout_weight="10"
                     android:height="20dip"
                     android:text="Large Text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginStart="17dp" />
 
                 <TextView
                     android:id="@+id/leaveTime"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="75dp"
-                    android:layout_marginRight="75dp"
+                    android:layout_marginEnd="53dp"
+                    android:layout_marginRight="53dp"
                     android:layout_weight="5"
                     android:height="20dip"
                     android:text="Large Text"
-                    android:textColor="@android:color/white" />
-
+                    android:textColor="@android:color/white"
+                    android:layout_alignTop="@+id/arrivalTime"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -137,33 +79,31 @@
                     android:id="@+id/dayOfWeek"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/workTime"
-                    android:layout_alignBottom="@+id/workTime"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
                     android:layout_weight=".5"
                     android:height="20dip"
                     android:text="Large Text"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:layout_alignTop="@+id/workTime"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="19dp"
+                    android:layout_marginStart="19dp" />
 
                 <TextView
                     android:id="@+id/workTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="73dp"
-                    android:layout_marginRight="73dp"
+                    android:layout_marginEnd="53dp"
+                    android:layout_marginRight="53dp"
                     android:layout_weight=".5"
                     android:height="20dip"
                     android:text="Large Text"
-                    android:textColor="@android:color/white" />
-
+                    android:textColor="@android:color/white"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
-
-
 </TableLayout>
 

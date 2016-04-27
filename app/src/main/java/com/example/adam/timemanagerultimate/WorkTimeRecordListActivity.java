@@ -18,6 +18,12 @@ import roboguice.inject.InjectView;
 @ContentView(R.layout.activity_work_time_record_list)
 public class WorkTimeRecordListActivity extends RoboActivity {
 
+    static final String[] FRUITS = new String[] { "Apple", "Avocado", "Banana",
+            "Blueberry", "Coconut", "Durian", "Guava", "Kiwifruit",
+            "Jackfruit", "Mango", "Olive", "Pear", "Sugar-apple" };
+
+
+
     @Inject
     private IWorkTimeRecordRepo workTimeRecordRepo;
 
