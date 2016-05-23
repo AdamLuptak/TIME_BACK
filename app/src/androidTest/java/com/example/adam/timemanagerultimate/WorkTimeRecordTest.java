@@ -1,4 +1,4 @@
-package com.example.adam.timemanagerultimate.test;
+package com.example.adam.timemanagerultimate;
 
 import com.example.adam.timemanagerultimate.domain.WorkTimeRecord;
 

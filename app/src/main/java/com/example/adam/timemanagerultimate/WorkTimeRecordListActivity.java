@@ -22,8 +22,6 @@ public class WorkTimeRecordListActivity extends RoboActivity {
             "Blueberry", "Coconut", "Durian", "Guava", "Kiwifruit",
             "Jackfruit", "Mango", "Olive", "Pear", "Sugar-apple" };
 
-
-
     @Inject
     private IWorkTimeRecordRepo workTimeRecordRepo;
 

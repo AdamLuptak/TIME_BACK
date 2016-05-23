@@ -30,7 +30,6 @@ public class EditWorkTimeFragment extends RoboFragment {
 
     Context thiscontext;
 
-
     @Inject
     private IWorkTimeRecordRepo workTimeRecordRepo;
 
@@ -42,7 +41,6 @@ public class EditWorkTimeFragment extends RoboFragment {
 
     @InjectView(R.id.goHomeButton)
     private Button goHomeButton;
-
 
 
     // TODO: Rename parameter arguments, choose names that match

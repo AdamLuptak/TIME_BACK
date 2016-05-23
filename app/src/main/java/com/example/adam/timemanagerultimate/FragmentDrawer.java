@@ -28,6 +28,7 @@ import java.util.List;
 
 public class FragmentDrawer extends Fragment {
 
+
     private static String TAG = FragmentDrawer.class.getSimpleName();
 
     private RecyclerView recyclerView;
@@ -36,6 +37,7 @@ public class FragmentDrawer extends Fragment {
     private NavigationDrawerAdapter adapter;
     private View containerView;
     private static String[] titles = null;
+
     private FragmentDrawerListener drawerListener;
 
     public FragmentDrawer() {
